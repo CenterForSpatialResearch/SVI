@@ -1,0 +1,119 @@
+body{
+	font-family:'Helvetica';
+    font-weight:200;
+	color:#000000;
+    font-size:12px;
+	margin:0px;
+}
+#mapPopup{
+	margin:0px;
+	width:230px;
+	filter: drop-shadow(2px 2px 4px rgba(0,0,0,.5));
+	padding:10px;
+	position:absolute;
+	background-color:rgba(255,255,255,1);
+	visibility:hidden;
+	z-index:9999;
+	line-height:120%;
+	overflow:hidden;
+}
+#map{
+    position:absolute;
+    top:0;
+    right:0;
+    min-width:100%;
+    min-height:100%;
+    z-index:-1;
+    margin-left:0px;
+    margin-top:0px;
+    padding-top:0px;
+    resize:both;
+}
+
+#measures{
+  width:280px;
+  background-color:#ffffff;
+  z-index:1;
+  position:absolute;
+  
+}
+#title{
+  font-size:36px;
+	font-weight:100;
+  line-height:130%;
+}
+.checkbox{
+	height:10px;
+	width:10px;
+	border:1px solid #000;
+}
+.check {
+  position:absolute;
+  margin-top:1px;
+  left: 14px;
+  width: 3px;
+  height: 7px;
+  border: solid #000;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  
+}
+#key{
+  position:absolute;
+  right:10px;
+  bottom:10px;
+  background-color:black;
+  padding:20px;
+  font-size:12px;
+  z-index:2;
+}
+.chapter{
+  width:100%;
+  padding:10px;
+  position:relative;
+}
+p{
+	width:50%;
+	max-width:600px;
+	min-width:200px;
+	font-size:16px;
+}
+.themes{
+	padding:10px;
+}
+img{
+	height:100px;
+	display:inline-block;
+}
+.tractDiv{
+	width:200px;
+}
+.groupTitle{
+	padding:5px;
+	font-size:24px;
+}
+.measureTitle{
+	font-size:16px;
+	padding:5px;
+}
+.orderTitle{
+	padding:5px;
+}
+.sectionTitle{
+	font-size:24px;
+	
+}
+#boroughChartPopup{
+	position:absolute;
+	padding:5px;
+	background-color:rgba(255,255,255,.8);
+}
+#clickableThemesMap{
+	/*position:absolute;
+*/
+	width:800px;
+	height:500px;
+	border:1px solid black;
+}
