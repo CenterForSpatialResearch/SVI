@@ -8,14 +8,14 @@ function drawThemeMap(data,divName){//,outline){
     mapboxgl.accessToken = "pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJja2J0ajRtNzMwOHBnMnNvNnM3Ymw5MnJzIn0.fsTNczOFZG8Ik3EtO9LdNQ"
 
     var maxBounds = [
-      [-74.235258, 40.4485374], // Southwest coordinates
+      [-74.27, 40.48], // Southwest coordinates
       [-73.289334, 40.931799] // Northeast coordinates
     ];
     thememap = new mapboxgl.Map({
         container: divName,
         style:"mapbox://styles/c4sr-gsapp/ckytx8oxk000e14rh745xntyo",
        // maxZoom:15,
-        zoom: 9.4,
+        zoom: 9.6,
 		    center:[-73.95, 40.7],
         preserveDrawingBuffer: true,
         minZoom:1,
@@ -25,8 +25,9 @@ function drawThemeMap(data,divName){//,outline){
 
   var hoverCountyID = null;
   thememap.on("load",function(){
-	
-        thememap.addControl(new mapboxgl.NavigationControl(),'bottom-right');
+	d3.selectAll(".mapboxgl-ctrl-attrib").remove()
+	  d3.selectAll(".mapboxgl-ctrl-logo").remove()
+     //   thememap.addControl(new mapboxgl.NavigationControl(),'bottom-right');
         thememap.dragRotate.disable();
         
 		thememap.addSource("theme",{
@@ -39,8 +40,8 @@ function drawThemeMap(data,divName){//,outline){
 		              'source': 'theme', 
 		              'layout': {'visibility':'none'},
 		              'paint': {
-		                'fill-color': 'red',
-						  'fill-opacity':.5,
+		                'fill-color': 'gold',
+						  'fill-opacity':.8,
 						  'fill-outline-color':"black"
 		              }
 		            })
@@ -51,17 +52,19 @@ function drawThemeMap(data,divName){//,outline){
   		              'layout': {'visibility':'visible'},
   		              'paint': {
   		                'line-color': 'black',
-  						  'line-width':1,
+  						  'line-width':.5,
 						  "line-opacity":.4
   		              }
   		            })
-		
+	  	  filterByTheme("EPL_AGE17", data)
+		d3.select("#EPL_AGE17_clickableMap").style("background-color","gold")
+		d3.select("#themesMapKey").html("Showing census tracts with the highest vulnerability by <strong>"+themeDisplayText["EPL_AGE17"]+"</strong>")
       });
+	  
 	  thememap.on("mousemove",function(e){
 	  	var feature = thememap.queryRenderedFeatures(e.point);
 		if(feature.length>0){
-		console.log(feature[0]["properties"]["LOCATION"])
-			
+//		console.log(feature[0]["properties"]["LOCATION"])
 		}
 	  })
 }
@@ -119,29 +122,90 @@ function drawClickableThemeMap(data){
 				
 				var measure = d3.select(this).attr("id").split("_")[0]+"_"+d3.select(this).attr("id").split("_")[1]
 				//console.log(measure)
-				var topTracts = data.features.sort(function(a,b){
-						return parseFloat(b["properties"][measure])-parseFloat(a["properties"][measure])
-				})				//
-				// newData["features"]=topTracts.slice(0,20)
-				// console.log(newData)
-				var topIds =[] 
-				for(var t in topTracts.slice(0,50)){
-					//console.log(topTracts[t]["properties"]["FIPS"])
-					topIds.push(topTracts.slice(0,50)[t]["properties"]["FIPS"])
-				}
-				var filter = ["in","FIPS"].concat(topIds)
-				//console.log(filter)
-				thememap.setFilter("theme",filter)
-				thememap.setLayoutProperty("theme",'visibility','visible')
-				
+				filterByTheme(measure, data)
 			})
 		}
 	}
-	
 }
 
-function drawTopAndBottom(tracts){
+function filterByTheme(measure, data){
+		d3.select("#themesMapKey").html("Showing census tracts with the highest vulnerability by <strong>"
+	+themeDisplayText[measure.replace("EP_","EPL")]+"</strong>")
+	
+	var topTracts = data.features.sort(function(a,b){
+			return parseFloat(b["properties"][measure])-parseFloat(a["properties"][measure])
+	})				//
+	// newData["features"]=topTracts.slice(0,20)
+	// console.log(newData)
+	var topIds =[] 
+	for(var t in topTracts.slice(0,100)){
+		//console.log(topTracts[t]["properties"]["FIPS"])
+		topIds.push(topTracts.slice(0,100)[t]["properties"]["FIPS"])
+	}
+	var filter = ["in","FIPS"].concat(topIds)
+	//console.log(filter)
+	thememap.setFilter("theme",filter)
+	thememap.setFilter("themeOutline",filter)
+	thememap.setLayoutProperty("theme",'visibility','visible')
+}
+
+function drawBars(tracts){
+	var barColors = ["green","gray","red"]
+	var colorScale = d3.scaleLinear().domain([0,.5,1]).range(barColors)
+	console.log(tracts)
+	var sorted = tracts.sort(function(a,b){
+			return b["data"]["SPL_THEMES"]-a["data"]["RPL_THEMES"]
+	})
+	var width =800
+	var height = 150
+	var barHeight = 60
+	var padding = 80
+	var barSize = 20
+	var svg = d3.select("#cityChart").append("svg").attr("width",width).attr("height",height)
+	var xScale = d3.scaleLinear().domain([0,1]).range([0,width-padding*2])
+	var xAxis = d3.axisBottom().scale(xScale).ticks(10)
+	svg.append("g").call(xAxis).attr("transform","translate("+padding+","+(height-60)+")")
+	svg.append("text")
+		.text("Vulnerability Percentile Rank")
+		.attr("x",10).attr("y",16)
+		.style("font-size","16px")
+	svg.append("text")
+		.text("Where New York City's 2166 census tracts fall in the national percentile ranking")
+		.attr("x",10).attr("y",28)
+	svg.append("text").text("Low Vulnerability Index").attr("x",padding).attr("y",height-25).attr("fill",barColors[0])
+	svg.append("text").text("High Vulnerability Index").attr("x",width-padding).attr("y",height-25)
+		.attr("text-anchor","end").attr("fill",barColors[2])
+	
+	svg.selectAll(".cityBars")
+	.data(sorted)
+	.enter()
+	.append("rect")
+	.attr("x",function(d,i){return xScale(d["data"]["RPL_THEMES"])+padding})
+	.attr("y",function(d,i){return barHeight})
+	.attr("width",2)
+	.attr("height",barSize)
+	.attr("opacity",.2)
+	.attr("fill",function(d){
+		return colorScale(d["data"]["RPL_THEMES"])
+	})
+	.style("cursor","pointer")
+	.on("mouseover",function(d){
+		//console.log(d)
+		d3.select("#boroughChartPopup")
+		.html(d["countyName"].replace(", New York","").split(",").join("<br>")+"<br>"+d["data"]["RPL_THEMES"])
+		.style("left",event.clientX+15+"px")
+		.style("top",event.clientY+"px")
+		.style("visibility","visible")
+	})
+	.on("mouseout",function(d){
+		d3.select("#boroughChartPopup").style("visibility","hidden")
+	})
+}
+
+function drawBoroughs(tracts){
 	//console.log(tracts)
+	var barColors = ["green","gray","red"]
+	var colorScale = d3.scaleLinear().domain([0,.5,1]).range(barColors)
 	var sorted = tracts.sort(function(a,b){
 			return b["data"]["SPL_THEMES"]-a["data"]["RPL_THEMES"]
 	})
@@ -152,11 +216,11 @@ function drawTopAndBottom(tracts){
 		
 		var county = sorted[i]["data"]["COUNTY"]
 		if(Object.keys(countiesGrouped).indexOf(county)==-1){
-			if(sorted[i]["data"]["E_TOTPOP"]>-10){
+			if(sorted[i]["data"]["E_TOTPOP"]>-100){
 				countiesGrouped[county]=[sorted[i]]
 			}
 		}else{
-			if(sorted[i]["data"]["E_TOTPOP"]>-10){
+			if(sorted[i]["data"]["E_TOTPOP"]>-100){
 				countiesGrouped[county].push(sorted[i])
 			}
 		}
@@ -178,16 +242,16 @@ function drawTopAndBottom(tracts){
 	var xAxis = d3.axisBottom().scale(xScale).ticks(10)
 	svg.append("g").call(xAxis).attr("transform","translate("+padding+","+(height-80)+")")
 	svg.append("text")
-		.text("National Vulnerability Percentile Rank")
+		.text("Vulnerability Percentile Rank by Borough")
 		.attr("x",10).attr("y",16)
 		.style("font-size","16px")
 	svg.append("text")
-		.text("For 2166 census tracts in New York City by borough")
+		.text("Where census tracts from each borouogh fall in the national percentile ranking ")
 		.attr("x",10).attr("y",28)
 		
-	svg.append("text").text("Low Vulnerability Index").attr("x",padding).attr("y",height-40)
+	svg.append("text").text("Low Vulnerability Index").attr("x",padding).attr("y",height-40).attr("fill",barColors[0])
 	svg.append("text").text("High Vulnerability Index").attr("x",width-padding).attr("y",height-40)
-		.attr("text-anchor","end")
+		.attr("text-anchor","end").attr("fill",barColors[2])
 		
 	for(var c in countiesGrouped){
 				
@@ -213,6 +277,9 @@ function drawTopAndBottom(tracts){
 		.attr("width",2)
 		.attr("height",barSize)
 		.attr("opacity",.2)
+		.attr("fill",function(d){
+			return colorScale(d["data"]["RPL_THEMES"])
+		})
 		.style("cursor","pointer")
 		.on("mouseover",function(d){
 			//console.log(d)

@@ -227,7 +227,8 @@ function ready(tracts){
 	var map = drawMap(tracts,"map")
     var sorted = rankCounties()
 	drawTheme(sorted)
-	drawTopAndBottom(sorted)
+	drawBars(sorted)
+	drawBoroughs(sorted)
 	drawClickableThemeMap(tracts)
 	
    // drawList (sorted);
