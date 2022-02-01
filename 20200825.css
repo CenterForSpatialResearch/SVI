@@ -64,7 +64,6 @@ body{
   position:absolute;
   right:40px;
   top:10px;
-  background-color:white;
   padding:10px;
   padding-bottom:0px;
   font-size:12px;
@@ -115,19 +114,19 @@ img{
 #clickableThemesMap{
 	/*position:absolute;
 */
-	width:720px;
+	width:800px;
 	height:600px;
 	border:1px solid black;
 }
 #themesMapKey{
-/*	position:absolute;
-*/	/*padding:10px;*/
+	position:absolute;
+	padding:10px;
 	font-size:16px;
-/*	width:200px;
-*/	z-index:5;
+	width:200px;
+	z-index:5;
 	color:black;
 	background-color:rgba(255,255,255,.8);
-	margin-top:20px;
+	margin-top:140px;
 }
 #themesMapHistogram{
 /*	position:absolute;

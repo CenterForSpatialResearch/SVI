@@ -313,7 +313,7 @@ function drawBarsPerMeasure(tracts){
 	var width =800
 	var height = 100
 	var barHeight = 60
-	var padding = 80
+	var padding = 20
 	var barSize = 20
 	var svg = d3.select("#themesMapHistogram").append("svg").attr("width",width).attr("height",height)
 	var xScale = d3.scaleLinear().domain([0,1]).range([0,width-padding*2])
@@ -328,11 +328,11 @@ function drawBarsPerMeasure(tracts){
 // 		.text("Where New York City's 2166 census tracts fall in the national percentile ranking")
 // 		.attr("x",10).attr("y",30)
 	svg.append("text")
-		.text("New York City")
-		.attr("x",0).attr("y",height-55)
-	svg.append("text")
-		.text("All Tracts")
-		.attr("x",0).attr("y",height-40)
+		.text("New York City All Tracts")
+		.attr("x",padding).attr("y",height-70)
+	// svg.append("text")
+// 		.text("All Tracts")
+// 		.attr("x",0).attr("y",height-40)
 	svg.append("text").text("Low").attr("x",padding).attr("y",height-10).attr("fill",barColors[0])
 	svg.append("text").text("Nation Percentile Rank").attr("x",width/2).attr("y",height-10)
 	.attr("text-anchor","middle")
@@ -375,9 +375,10 @@ function drawBarsPerMeasure(tracts){
 	  .attr("x",xScale(cityMedian))
 	 .attr("y",30)
 	  .attr("height",barSize+10)
-	  .attr("width",1)
+	  .attr("width",2)
 	  .attr("fill",medianColor)
 	  .attr("transform","translate("+padding+",0)")
+	 .attr("fill",averageColor)
 	 
 	  svg.append("text").text(cityMedian)
 	 .attr("x",xScale(cityMedian)+padding+20)
@@ -386,15 +387,21 @@ function drawBarsPerMeasure(tracts){
 	  	    return "rotate(-45 " + (xScale(cityMedian)+padding+20) + " " + (barHeight-1) + ")";
 	  })
 	  .attr("fill",medianColor)
+	 .attr("fill",averageColor)
+	  .style("font-weight",700)
+	  
 	  
 		svg.append("text").text("- Measure Average")
 		.attr("fill",averageColor)
-		.attr("x",width-padding*2)
+		.attr("x",width-padding*6)
 		.attr("y",25)
 		svg.append("text").text("- Measure Median")
 		.attr("fill",medianColor)
-		.attr("x",width-padding*2)
+		.attr("x",width-padding*6)
 		.attr("y",10)
+		.attr("fill",averageColor)
+	  .style("font-weight",700)
+	  
 	
 	svg.selectAll(".cityBars")
 	.data(sorted)
@@ -435,89 +442,37 @@ function drawBars(tracts){
 			return b["data"]["SPL_THEMES"]-a["data"]["RPL_THEMES"]
 	})
 	var width =800
-	var height = 150
+	var height = 120
 	var barHeight = 60
-	var padding = 80
+	var padding = 20
 	var barSize = 20
 	var svg = d3.select("#cityChart").append("svg").attr("width",width).attr("height",height)
 	var xScale = d3.scaleLinear().domain([0,1]).range([0,width-padding*2])
 	var xAxis = d3.axisBottom().scale(xScale).ticks(10)
 	svg.append("g").call(xAxis).attr("transform","translate("+padding+","+(height-60)+")")
+	// svg.append("text")
+	// 	.text("Vulnerability Percentile Rank")
+	// 	.attr("x",10).attr("y",16)
+	// 	.style("font-size","20px")
+	// svg.append("text")
+// 		.text("Where New York City's 2166 census tracts fall in the national percentile ranking")
+// 		.attr("x",10).attr("y",18)
+// 		.style("font-size","20px")
 	svg.append("text")
-		.text("Vulnerability Percentile Rank")
-		.attr("x",10).attr("y",16)
-		.style("font-size","20px")
-	svg.append("text")
-		.text("Where New York City's 2166 census tracts fall in the national percentile ranking")
-		.attr("x",10).attr("y",30)
-	svg.append("text")
-		.text("New York City")
-		.attr("x",2).attr("y",height-65)
+		.text("New York City Tracts")
+		.attr("x",padding).attr("y",25)
 	svg.append("text").text("Low").attr("x",padding).attr("y",height-25).attr("fill",barColors[0])
 	svg.append("text").text("Nation Percentile Rank").attr("x",width/2).attr("y",height-25)
 	.attr("text-anchor","middle")
+	
 	svg.append("text").text("High").attr("x",width-padding).attr("y",height-25)
 		.attr("text-anchor","end").attr("fill",barColors[2])
-	
-	
-	var cityAverage = Math.round(getAverage(tracts)*100)/100
-	//console.log(cityAverage)
-	svg.append("rect")//.attr("id","average_"+c)
-	.attr("x",xScale(cityAverage))
-	.attr("y",barHeight)
-	.attr("height",barSize+10)
-	.attr("width",1)
-	.attr("fill",averageColor)
-	  .attr("transform","translate("+padding+",0)")
-	
-	svg.append("text").text(cityAverage)
-	.attr("x",xScale(cityAverage)+5+padding)
-	.attr("y",barHeight-1)
-	.attr("transform",function(){
-	    return "rotate(-45 " + (xScale(cityAverage)+5+padding) + " " + (barHeight-1) + ")";
-	})
-	.attr("fill",averageColor)
-	
-	if(tracts.length%2==0){
-		var cityMedian = Math.round((tracts[tracts.length/2]["data"]["RPL_THEMES"]
-		+tracts[tracts.length/2+1]["data"]["RPL_THEMES"])/2*100)/100
-	}else{
-		var cityMedian = Math.round(tracts[Math.ceil(tracts.length/2)]["data"]["RPL_THEMES"]*100)/100
-		//console.log(median)
-	}	
-	
-	 svg.append("rect")//.attr("id","median_"+c)
-	 .attr("x",xScale(cityMedian))
-	.attr("y",barHeight)
-	 .attr("height",barSize+10)
-	 .attr("width",1)
-	 .attr("fill",medianColor)
-	  .attr("transform","translate("+padding+",0)")
-	
-	 svg.append("text").text(cityMedian)
-	.attr("x",xScale(cityMedian)+5+padding)
-	.attr("y",barHeight-1)
-	 .attr("transform",function(){
- 	    return "rotate(-45 " + (xScale(cityMedian)+5+padding) + " " + (barHeight-1) + ")";
-	 })
-	 .attr("fill",medianColor)
-	 
-	 
-	svg.append("text").text("- City Average")
-	.attr("fill",averageColor)
-	.attr("x",width-padding*2)
-	.attr("y",50)
-	svg.append("text").text("- City Median")
-	.attr("fill",medianColor)
-	.attr("x",width-padding*2)
-	.attr("y",35)
-	
 	svg.selectAll(".cityBars")
 	.data(sorted)
 	.enter()
 	.append("rect")
 	.attr("x",function(d,i){return xScale(d["data"]["RPL_THEMES"])+padding})
-	.attr("y",function(d,i){return barHeight+10})
+	.attr("y",function(d,i){return 40})
 	.attr("width",2)
 	.attr("height",barSize)
 	.attr("opacity",.2)
@@ -536,6 +491,64 @@ function drawBars(tracts){
 	.on("mouseout",function(d){
 		d3.select("#boroughChartPopup").style("visibility","hidden")
 	})
+	
+	var cityAverage = Math.round(getAverage(tracts)*100)/100
+	//console.log(cityAverage)
+	svg.append("rect")//.attr("id","average_"+c)
+	.attr("x",xScale(cityAverage))
+	.attr("y",barHeight-30)
+	.attr("height",barSize+10)
+	.attr("width",1)
+	.attr("fill",averageColor)
+	  .attr("transform","translate("+padding+",0)")
+	
+	svg.append("text").text(cityAverage)
+	.attr("x",xScale(cityAverage)+5+padding)
+	.attr("y",barHeight-30)
+	.attr("transform",function(){
+	    return "rotate(-45 " + (xScale(cityAverage)+5+padding) + " " + (barHeight-30) + ")";
+	})
+	.attr("fill",averageColor)
+	
+	if(tracts.length%2==0){
+		var cityMedian = Math.round((tracts[tracts.length/2]["data"]["RPL_THEMES"]
+		+tracts[tracts.length/2+1]["data"]["RPL_THEMES"])/2*100)/100
+	}else{
+		var cityMedian = Math.round(tracts[Math.ceil(tracts.length/2)]["data"]["RPL_THEMES"]*100)/100
+		//console.log(median)
+	}	
+	
+	 svg.append("rect")//.attr("id","median_"+c)
+	 .attr("x",xScale(cityMedian))
+	.attr("y",barHeight-30)
+	 .attr("height",barSize+10)
+	 .attr("width",2)
+	 .style("font-weight",700)
+	 .attr("fill",averageColor)
+	  .attr("transform","translate("+padding+",0)")
+	
+	 svg.append("text").text(cityMedian)
+	.attr("x",xScale(cityMedian)+5+padding)
+	.attr("y",barHeight-30)
+	 .attr("transform",function(){
+ 	    return "rotate(-45 " + (xScale(cityMedian)+5+padding) + " " + (barHeight-30) + ")";
+	 })
+	 .style("font-weight",700)
+	 .attr("fill",averageColor)
+	 
+	 
+	svg.append("text").text("- City Average")
+	.attr("fill",averageColor)
+	.attr("x",width-padding*5)
+	.attr("y",30)
+	svg.append("text").text("- City Median")
+	.attr("fill",medianColor)
+	.attr("x",width-padding*5)
+	.attr("y",15)
+	 .style("font-weight",700)
+	 .attr("fill",averageColor)
+	
+	
 }
 
 function drawBoroughs(tracts){
@@ -569,7 +582,7 @@ function drawBoroughs(tracts){
 	}
 	//console.log(countiesGrouped)
 	var width =800
-	var height = 450
+	var height = 420
 	var svg = d3.select("#boroughCharts").append("svg").attr("width",width).attr("height",height)
 	var countyOffset = {
 		"New York": 1, 
@@ -578,18 +591,18 @@ function drawBoroughs(tracts){
 		Richmond: 4,
 		Bronx: 5}
 	var barHeight = 60
-	var padding = 80
+	var padding = 20
 	var barSize = 20
 	var xScale = d3.scaleLinear().domain([0,1]).range([0,width-padding*2])
 	var xAxis = d3.axisBottom().scale(xScale).ticks(10)
 	svg.append("g").call(xAxis).attr("transform","translate("+padding+","+(height-80)+")")
-	svg.append("text")
-		.text("Vulnerability Percentile Rank by Borough")
-		.attr("x",10).attr("y",16)
-		.style("font-size","20px")
-	svg.append("text")
-		.text("Where census tracts from each borouogh fall in the national percentile ranking ")
-		.attr("x",10).attr("y",28)
+	// svg.append("text")
+// 		.text("Vulnerability Percentile Rank by Borough")
+// 		.attr("x",10).attr("y",16)
+// 		.style("font-size","20px")
+// 	svg.append("text")
+// 		.text("Where census tracts from each borouogh fall in the national percentile ranking ")
+// 		.attr("x",10).attr("y",28)
 		
 	svg.append("text").text("Low").attr("x",padding).attr("y",height-40).attr("fill",barColors[0])
 	svg.append("text").text("Nation Percentile Rank").attr("x",width/2).attr("y",height-40)
@@ -599,16 +612,19 @@ function drawBoroughs(tracts){
 		
 		svg.append("text").text("- Borough Average")
 		.attr("fill",averageColor)
-		.attr("x",width-padding*2)
+		.attr("x",width-padding*6)
 		.attr("y",65)
 		svg.append("text").text("- Borough Median")
 		.attr("fill",medianColor)
-		.attr("x",width-padding*2)
+		.attr("x",width-padding*6)
 		.attr("y",50)
+	 .style("font-weight",700)
+	 .attr("fill",averageColor)
 	
 	for(var c in countiesGrouped){
 				
-		svg.append("text").text(boroughNames[c]).attr("x",5).attr("y",countyOffset[c]*barHeight+barHeight/2+5)
+		svg.append("text").text(boroughNames[c]).attr("x",padding)
+		.attr("y",countyOffset[c]*barHeight+15)
 		
 		var countyData = countiesGrouped[c].sort(function(a,b){
 							return b["data"]["RPL_THEMES"]-a["data"]["RPL_THEMES"]
@@ -668,8 +684,8 @@ function drawBoroughs(tracts){
 		.attr("x",xScale(median))
 		.attr("y",countyOffset[c]*barHeight+barSize-10)
 		.attr("height",barSize+10)
-		.attr("width",1)
-		.attr("fill",medianColor)
+		.attr("width",2)
+	 .attr("fill",averageColor)
 	  .attr("transform","translate("+padding+",0)")
 		
 		svg.append("text").text(median)
@@ -679,7 +695,8 @@ function drawBoroughs(tracts){
 		    return "rotate(-45 " + (xScale(median)+5+padding) + " " + (countyOffset[c]*barHeight+10) + ")";
 		})
 		.attr("fill",medianColor)
-		
+	 .style("font-weight",700)
+	 .attr("fill",averageColor)
 	}
 }
 
