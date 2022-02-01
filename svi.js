@@ -226,7 +226,7 @@ function ready(tracts){
 	//draw the map
 	var map = drawMap(tracts,"map")
     var sorted = rankCounties()
-	drawTheme(sorted)
+	//drawTheme(sorted)
 	drawBars(sorted)
 	drawBoroughs(sorted)
 	drawClickableThemeMap(tracts)
@@ -592,7 +592,8 @@ function drawMap(data,divName){//,outline){
     ];
     map = new mapboxgl.Map({
         container: divName,
-        style:"mapbox://styles/c4sr-gsapp/ckpwtdzjv4ty617llc8vp12gu",
+       // style:"mapbox://styles/c4sr-gsapp/ckpwtdzjv4ty617llc8vp12gu",
+        style:"mapbox://styles/c4sr-gsapp/ckytx8oxk000e14rh745xntyo",
        // maxZoom:15,
         zoom: 9.7,
 		    center:[-73.95, 40.7],
@@ -630,17 +631,18 @@ function drawMap(data,divName){//,outline){
            'layout': {},
            'paint': {
              'line-color': '#F4AE00',
-			   'line-width': 5
+			   'line-width': 4
            }
-         },"road")
+         })
 		 
          map.addLayer({
              'id': 'counties',
              'type': 'fill',
              'source': 'counties',
              'paint': {
+						  'fill-outline-color':"white",
              'fill-color': "#fff",
-                 'fill-opacity':1
+                 'fill-opacity':.8
              },
              "filter": ["!=", "E_TOTPOP", 0] // filter out no population
          },"hoverOutline")
@@ -753,7 +755,7 @@ function colorByPriority(map){
 	//console.log(pub.all)
 	console.log(pub.activeThemes)
     map.getSource('counties').setData(pub.all);
-    map.setPaintProperty("counties", 'fill-opacity',1)
+   // map.setPaintProperty("counties", 'fill-opacity',1)
     var matchString = {
     property: "tally",
     stops: [
@@ -766,6 +768,19 @@ function colorByPriority(map){
 		]
     }
 	
+    var opacitySteps = {
+    property: "tally",
+    stops: [
+		[0,0],
+		[.000001, 1],
+		[pub.activeThemes.length/5, .8],
+		[pub.activeThemes.length/2, 0],
+		[pub.activeThemes.length*.8, .8],
+		[pub.activeThemes.length, 1]
+		]
+    }
+	
+    map.setPaintProperty("counties", 'fill-opacity', opacitySteps)
     map.setPaintProperty("counties", 'fill-color', matchString)
     d3.select("#coverage").style("display","block")
 }

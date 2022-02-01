@@ -1,0 +1,38 @@
+<!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
+<qgis version="3.22.3-Białowieża">
+  <identifier>SVI2018_NEWYORK_tract</identifier>
+  <parentidentifier></parentidentifier>
+  <language>ENG</language>
+  <type>dataset</type>
+  <title>SVI2018_NEWYORK_tract</title>
+  <abstract>See complete documentation here: http://gis.cdc.gov/grasp/svi/SVI2018Documentation.pdf. For additional questions, contact the SVI Lead at SVI_Coordinator@cdc.gov.
+
+CDC's Social Vulnerability Index (SVI) is a tool, created by the Geospatial Research, Analysis &amp; Services Program (GRASP), to help public health officials and emergency response planners identify and map the communities that will most likely need support before, during, and after a hazardous event. The tract-level SVI shows the relative vulnerability of the population of every U.S. Census tract. The county-level SVI shows the relative vulnerability of every U.S. county population. The SVI ranks tracts (or counties) on 15 social factors, described in detail in the documentation. The tract (or county) rankings for individual factors are further grouped into four related themes. Thus each enumeration unit receives a ranking for each Census variable and for each of the four themes, as well as an overall ranking.</abstract>
+  <keywords vocabulary="Search keys">
+    <keyword>2018</keyword>
+    <keyword>social vulnerability</keyword>
+  </keywords>
+  <keywords vocabulary="gmd:topicCategory">
+    <keyword>social vulnerability</keyword>
+  </keywords>
+  <links/>
+  <fees></fees>
+  <rights>CDC/ATSDR/Division of Toxicology and Human Health Sciences/Geospatial Research, Analysis &amp; Services Program</rights>
+  <encoding></encoding>
+  <crs>
+    <spatialrefsys>
+      <wkt>GEOGCRS["NAD83",DATUM["North American Datum 1983",ELLIPSOID["GRS 1980",6378137,298.257222101,LENGTHUNIT["metre",1]]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],CS[ellipsoidal,2],AXIS["geodetic latitude (Lat)",north,ORDER[1],ANGLEUNIT["degree",0.0174532925199433]],AXIS["geodetic longitude (Lon)",east,ORDER[2],ANGLEUNIT["degree",0.0174532925199433]],USAGE[SCOPE["Geodesy."],AREA["North America - onshore and offshore: Canada - Alberta; British Columbia; Manitoba; New Brunswick; Newfoundland and Labrador; Northwest Territories; Nova Scotia; Nunavut; Ontario; Prince Edward Island; Quebec; Saskatchewan; Yukon. Puerto Rico. United States (USA) - Alabama; Alaska; Arizona; Arkansas; California; Colorado; Connecticut; Delaware; Florida; Georgia; Hawaii; Idaho; Illinois; Indiana; Iowa; Kansas; Kentucky; Louisiana; Maine; Maryland; Massachusetts; Michigan; Minnesota; Mississippi; Missouri; Montana; Nebraska; Nevada; New Hampshire; New Jersey; New Mexico; New York; North Carolina; North Dakota; Ohio; Oklahoma; Oregon; Pennsylvania; Rhode Island; South Carolina; South Dakota; Tennessee; Texas; Utah; Vermont; Virginia; Washington; West Virginia; Wisconsin; Wyoming. US Virgin Islands. British Virgin Islands."],BBOX[14.92,167.65,86.46,-47.74]],ID["EPSG",4269]]</wkt>
+      <proj4>+proj=longlat +datum=NAD83 +no_defs</proj4>
+      <srsid>3401</srsid>
+      <srid>4269</srid>
+      <authid>EPSG:4269</authid>
+      <description>NAD83</description>
+      <projectionacronym>longlat</projectionacronym>
+      <ellipsoidacronym>EPSG:7019</ellipsoidacronym>
+      <geographicflag>true</geographicflag>
+    </spatialrefsys>
+  </crs>
+  <extent>
+    <spatial miny="30.22333400000000125" maxx="-84.88908000000000698" minx="-88.47322699999999429" maxy="35.00802800000000303" minz="0" maxz="0" dimensions="2" crs="EPSG:4269"/>
+  </extent>
+</qgis>

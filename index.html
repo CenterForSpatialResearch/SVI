@@ -53,16 +53,18 @@
 		
 		</div>
 		<div id="info">
-			 <!-- <p>Over the past 2 years, the <strong>Social Vulnerability Index</strong> has been used as the basis for a variety of projects to determine prioritization in distribution of covid related resources.*</p> -->
 			<p>
-		The Social Vulnerability Index provides a <strong>relative social vulnerability</strong> of census tracts across the U.S. The index is a composite of the 15 variables, each variable is based on demographic information collected by the Census.
+		The <strong>Social Vulnerability Index</strong> provides a <strong>relative social vulnerability</strong> of census tracts across the U.S.
+		Over the past 2 years, the Social Vulnerability Index has been used as the basis for a variety of projects to determine prioritization in distribution of covid related resources.
 	</p>
 	
-	<p><span class="sectionTitle">Overall Vulnerability Score</span><br>
-	This is how the Social Vulnerability Index describes New York City.
-	Census tracts in the Bronx has some of the highest overall vulnerability scores in New York City and in the country.</p>
-	</div>
+	<p><span class="sectionTitle">Overall Vulnerability</span><br>
+	This is how New York City census tracts compare against tracts across the country. Tracts in New York City have higher vulnerability scores than the national average.</p>
+</div>
 	<div id="cityChart"></div>
+	<br>
+	<br>
+	<p>Census tracts in the Bronx has some of the highest overall vulnerability scores in New York City and in the country.</p>
 	<div id="boroughCharts"></div>
 	<div id="boroughChartPopup"></div>
 	
@@ -72,35 +74,40 @@
 	<p><span class="sectionTitle">Taking apart the vulnerability composit</span><br>
 
 		<!-- https://pubmed.ncbi.nlm.nih.gov/27029324/-->
-		<p>Each part of New York City has a different composition when it comes to the 15 vulnerability metrics. Click any single metric to see where in the city census tracts are deemed vulnerable in that metric.<!-- This set of diverse factors allow the index to leverage different types of vulnerability and place vastely different geographies along the same set of axis.  -->
+		<p>The index is a composite of the 15 variables collected by the Census. Each part of New York City has a different composition when it comes to the 15 vulnerability metrics. Click any single metric below to see where in the city census tracts are deemed the most vulnerable in that metric and how tracts here compare to the rest of the country.<!-- This set of diverse factors allow the index to leverage different types of vulnerability and place vastely different geographies along the same set of axis.  -->
 		</p>
-		<div id="clickableThemes"></div>
+		<div id="clickableThemes">The 15 Census Variables<br></div>
 		<div id="themesMapKey"></div>
+		<div id="themesMapHistogram"></div>
 		<div id="clickableThemesMap"></div>
+		<div id="thememapPopup"></div>
 		<p>
 		</p>
 		
 
 </div>
 
-<div id="factors" class="chapter">
+<!-- <div id="factors" class="chapter">
 	<p><span class="sectionTitle">What does vulnerability look like?</span><br>
-	
+
 		<p>Here are each of the factors and what they mean in New York City.</p>
 	<div id="themes">
-	
+
 	</div>
-	
+
 		</div>
-</div>
+</div> -->
 
 <div id="explorer" class="chapter">
+	<p><span class="sectionTitle">Customize the SVI</span></p>
+<p>Explore how different combinations of the metrics within SVI effects the social vulnerability index of areas in New York City. Toggling the vulnerability variables below reconfigures the SVI to include/exclude specific variables 
+			and changes the vulnerability landscape of the city.</p>
 
-	<p><span class="sectionTitle">Make your own composit</span><br>
+</div>
 
+<div id="explorerMap" class="chapter">
 		<div id = "measures">
-			You can explore how different composites of SVI effects the social vulnerability index of areas in New York City. Toggling the vulnerability variables below reconfigures the SVI to include/exclude specific variables 
-			and changes the vulnerability landscape of the city.
+			
 		</div>
 
 	<div id="map">
