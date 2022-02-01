@@ -12,6 +12,10 @@
 
 //SECTION 1
 //Setup variables, may still need some cleaning to get rid of unused ones
+console.log(window.innerWidth)
+d3.select("#map").style("min-width",window.innerWidth+"px").style("margin-left",(window.innerWidth/2-390)*-1+"px")
+
+d3.select("#measures").style("margin-left",(window.innerWidth/2-420)*-1+"px")
 var map;
 var thememap;
 var pub = {
@@ -146,7 +150,7 @@ var width = 250;
 var data = [
 	{"color":colors[0],"value":0},
 	{"color":colors[0],"value":width/5},
-	{"color":colors[1],"value":width/2},
+	{"color":"rgba(255,255,255,.2)","value":width/2},
 	{"color":colors[2],"value":width/5*4},
 	{"color":colors[2],"value":width}
 ];
@@ -171,8 +175,9 @@ svg.append("text")
 	.attr("text-anchor","end")
 	.style("font-size","10px")
 	.style("fill",colors[2])
-	.style("font-weight","bold")
+	.style("background-color","white")
 	.style("letter-spacing","1px")
+
 svg.append("text")
 	.text("Low SVI")
 	.attr("x",0).attr("y",15)
@@ -280,7 +285,7 @@ function ready(tracts){
 			.html(themeDisplayText[themeContent[t]])
             .style("cursor","pointer")
 			
-			item.on("mouseover",function(){d3.select(this).style("background-color","yellow")})
+			item.on("mouseover",function(){d3.select(this).style("background-color","gold")})
 			item.on("mouseout",function(){d3.select(this).style("background-color","#fff")})
             
 			item.on("click",function(){
@@ -587,16 +592,16 @@ function drawMap(data,divName){//,outline){
     mapboxgl.accessToken = "pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJja2J0ajRtNzMwOHBnMnNvNnM3Ymw5MnJzIn0.fsTNczOFZG8Ik3EtO9LdNQ"
 
     var maxBounds = [
-      [-74.635258, 40.2485374], // Southwest coordinates
-      [-73.289334, 40.931799] // Northeast coordinates
+      [-74.635258, 40.45], // Southwest coordinates
+      [-73.289334, 40.98] // Northeast coordinates
     ];
     map = new mapboxgl.Map({
         container: divName,
        // style:"mapbox://styles/c4sr-gsapp/ckpwtdzjv4ty617llc8vp12gu",
         style:"mapbox://styles/c4sr-gsapp/ckytx8oxk000e14rh745xntyo",
        // maxZoom:15,
-        zoom: 9.7,
-		    center:[-73.95, 40.7],
+        zoom: 12,
+		    center:[-73.905,40.739],
         preserveDrawingBuffer: true,
         minZoom:1,
         maxBounds: maxBounds
@@ -630,8 +635,8 @@ function drawMap(data,divName){//,outline){
            'source': 'counties',
            'layout': {},
            'paint': {
-             'line-color': '#F4AE00',
-			   'line-width': 4
+             'line-color': '#000000',
+			   'line-width': 1
            }
          })
 		 
@@ -717,7 +722,7 @@ function drawMap(data,divName){//,outline){
 			 .replace(", New York","").replace("Census","")
              //var countyName = feature["properties"]["COUNTY"]+" County, "+feature["properties"]["ST_ABBR"]
              var population = feature["properties"]["E_TOTPOP"]
-             var displayString = "<b>"+locationName+"</b>+<br>" //+ "<br> Population: "+population+"<br>"
+             var displayString = "<b>"+locationName+"</b><br>" //+ "<br> Population: "+population+"<br>"
              var activeTally = 0
              var activeCount = 0
              for(var t in toggleDictionary){
@@ -761,9 +766,9 @@ function colorByPriority(map){
     stops: [
 		[0,"#aaa"],
 		[.000001, colors[0]],
-		[pub.activeThemes.length/5, colors[0]],
+		[pub.activeThemes.length*.2, colors[0]],
 		[pub.activeThemes.length/2,colors[1]],
-		[pub.activeThemes.length/5*4, colors[2]],
+		[pub.activeThemes.length*.8, colors[2]],
 		[pub.activeThemes.length, colors[2]]
 		]
     }
@@ -771,14 +776,17 @@ function colorByPriority(map){
     var opacitySteps = {
     property: "tally",
     stops: [
-		[0,0],
+		[0,1],
 		[.000001, 1],
-		[pub.activeThemes.length/5, .8],
+		[pub.activeThemes.length*.2, .9],
 		[pub.activeThemes.length/2, 0],
-		[pub.activeThemes.length*.8, .8],
+		[pub.activeThemes.length*.8, .9],
 		[pub.activeThemes.length, 1]
 		]
     }
+	
+	
+	
 	
     map.setPaintProperty("counties", 'fill-opacity', opacitySteps)
     map.setPaintProperty("counties", 'fill-color', matchString)

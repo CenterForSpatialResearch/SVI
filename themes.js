@@ -66,14 +66,14 @@ var histogram = d3.histogram()
 }
 function colorByMeasure(){
 	//console.log(pub.all)
-	console.log(pub.activeThemes)
+	//console.log(pub.activeThemes)
    // thememap.getSource('theme').setData(pub.all);
     thememap.setPaintProperty("theme", 'fill-opacity',.8)
     var colorSteps = {
     property: currentMeasure,
     stops: [
-		[0,"#aaa"],
-		[.000001, colors[0]],
+		// [0,"#aaa"],
+		[.0, colors[0]],
 		[.1, colors[0]],
 		[.5,colors[1]],
 		[.9, colors[2]],
@@ -84,7 +84,7 @@ function colorByMeasure(){
     var opacitySteps = {
     property: currentMeasure,
     stops: [
-		[0,1],
+		[0,.3],
 		[.000001, 1],
 		[.2, .2],
 		[.5,0],
@@ -92,6 +92,8 @@ function colorByMeasure(){
 		[1, 1]
 		]
     }
+	
+	
 	
     thememap.setPaintProperty("theme", 'fill-color', colorSteps)
     thememap.setPaintProperty("theme", 'fill-opacity', opacitySteps)
@@ -115,8 +117,8 @@ function drawThemeMap(data,divName){//,outline){
         container: divName,
         style:"mapbox://styles/c4sr-gsapp/ckytx8oxk000e14rh745xntyo",
        // maxZoom:15,
-        zoom: 9.6,
-		    center:[-73.95, 40.7],
+        zoom:10,
+		    center:[-73.943,40.727],
         preserveDrawingBuffer: true,
         minZoom:1,
         maxBounds: maxBounds
@@ -184,7 +186,7 @@ function drawThemeMap(data,divName){//,outline){
    //          }
 
              d3.select("#thememapPopup").style("visibility","visible")
-             .style("left",x+"px")
+             .style("left",(x-300)+"px")
              .style("top",y+"px")
 	
 			var tractName = "<strong>"+feature[0]["properties"]["LOCATION"].replace(", New York","").replace(",","<br>")+"</strong>"
@@ -227,16 +229,16 @@ function drawClickableThemeMap(data){
 		.style("vertical-align","top")
 		.style("width","180px")
 		.style("margin","2px")
-		.style("border","1px solid black")
 		
 		groupDiv.append("div").html(themeGroupDisplayText[m])
-		.style("background-color","black")
+		//.style("background-color","black")
 		.style("padding","2px")
-		.style("color","white")
+		//.style("color","white")
 		.attr("class","themeButton")
+		.style("font-style","italic")
 		// .style("border","1px solid black")
 		//.style("cursor","pointer")
-		//.style("font-weight","700")
+		.style("font-size","18px")
 		// .on("click",function(){
 //
 // 				d3.selectAll(".measureButton").style("background-color","white")
@@ -333,11 +335,11 @@ function drawBarsPerMeasure(tracts){
 	// svg.append("text")
 // 		.text("All Tracts")
 // 		.attr("x",0).attr("y",height-40)
-	svg.append("text").text("Low").attr("x",padding).attr("y",height-10).attr("fill",barColors[0])
+	svg.append("text").text("Low Vulnerability").attr("x",padding).attr("y",height-10).attr("fill",barColors[0])
 	svg.append("text").text("Nation Percentile Rank").attr("x",width/2).attr("y",height-10)
 	.attr("text-anchor","middle")
 
-	svg.append("text").text("High").attr("x",width-padding).attr("y",height-10)
+	svg.append("text").text("High Vulnerability").attr("x",width-padding).attr("y",height-10)
 		.attr("text-anchor","end").attr("fill",barColors[2])
 	
 	
@@ -437,7 +439,7 @@ function drawBars(tracts){
 	var barColors = ["#00A9CE","#aaa","#FB7139"]
 
 	var colorScale = d3.scaleLinear().domain([0,.5,1]).range(barColors)
-	console.log(tracts)
+	//console.log(tracts)
 	var sorted = tracts.sort(function(a,b){
 			return b["data"]["SPL_THEMES"]-a["data"]["RPL_THEMES"]
 	})
@@ -458,14 +460,17 @@ function drawBars(tracts){
 // 		.text("Where New York City's 2166 census tracts fall in the national percentile ranking")
 // 		.attr("x",10).attr("y",18)
 // 		.style("font-size","20px")
+	
+	
+	
 	svg.append("text")
 		.text("New York City Tracts")
 		.attr("x",padding).attr("y",25)
-	svg.append("text").text("Low").attr("x",padding).attr("y",height-25).attr("fill",barColors[0])
+	svg.append("text").text("Low Vulnerability").attr("x",padding).attr("y",height-25).attr("fill",barColors[0])
 	svg.append("text").text("Nation Percentile Rank").attr("x",width/2).attr("y",height-25)
 	.attr("text-anchor","middle")
 	
-	svg.append("text").text("High").attr("x",width-padding).attr("y",height-25)
+	svg.append("text").text("Hig Vulnerabilityh").attr("x",width-padding).attr("y",height-25)
 		.attr("text-anchor","end").attr("fill",barColors[2])
 	svg.selectAll(".cityBars")
 	.data(sorted)
@@ -547,6 +552,16 @@ function drawBars(tracts){
 	.attr("y",15)
 	 .style("font-weight",700)
 	 .attr("fill",averageColor)
+	 
+		
+	svg.append("text").text("National Average and Median")
+		.attr("x",width/2).attr("y",10).attr("fill","black")
+	 .attr("text-anchor","middle")
+	 
+	svg.append("line").attr("x1",width/2).attr("x2",width/2)
+		.attr("y1",padding).attr("y2",height-padding*4).attr("class","nationalLine")
+		.style('stroke-width',1).attr("stroke","black")
+		.style("stroke-dasharray","2,4")
 	
 	
 }
@@ -604,10 +619,19 @@ function drawBoroughs(tracts){
 // 		.text("Where census tracts from each borouogh fall in the national percentile ranking ")
 // 		.attr("x",10).attr("y",28)
 		
-	svg.append("text").text("Low").attr("x",padding).attr("y",height-40).attr("fill",barColors[0])
+	svg.append("text").text("National Average and Median")
+		.attr("x",width/2).attr("y",20).attr("fill","black")
+	 .attr("text-anchor","middle")
+	
+	svg.append("line").attr("x1",width/2).attr("x2",width/2)
+		.attr("y1",padding).attr("y2",height-padding*4).attr("class","nationalLine")
+		.style('stroke-width',1).attr("stroke","black")
+		.style("stroke-dasharray","2,4")
+		
+	svg.append("text").text("Low Vulnerability").attr("x",padding).attr("y",height-40).attr("fill",barColors[0])
 	svg.append("text").text("Nation Percentile Rank").attr("x",width/2).attr("y",height-40)
 	.attr("text-anchor","middle")
-	svg.append("text").text("High").attr("x",width-padding).attr("y",height-40)
+	svg.append("text").text("High Vulnerability").attr("x",width-padding).attr("y",height-40)
 		.attr("text-anchor","end").attr("fill",barColors[2])
 		
 		svg.append("text").text("- Borough Average")

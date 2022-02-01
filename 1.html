@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	  <meta charset="UTF-8">
+    <title>SVI v0.1</title>
+
+    <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/dc.css"/>
+  <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet' />
+
+  <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Raleway:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@700&family=Coda+Caption:wght@800&family=Hammersmith+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/geocoder.css"/>
+    <link rel="stylesheet" type="text/css" href="20200825.css"/>
+
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous">
+</script>
+<script src="js/jquery.mousefollow.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script type="text/javascript" src="js/d3.js"></script>
+<script type="text/javascript" src="js/queue.v1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+      
+		  
+</style>
+
+</head>
+
+<body>
+<div id="container">
+	
+	<div id="intro" class="chapter">
+		<div id="title" class="menu">
+			The Social Vulnerability Index
+		</div>
+				
+		<div id="info">
+			<p>
+			The <a href="https://www.atsdr.cdc.gov/placeandhealth/svi/index.html" target="blank">Social Vulnerability Index</a> provides a <strong><i>composite score of relative social vulnerability</i></strong> for every census tract in the U.S.
+			Over the past 2 years, the Index, which is made by the CDC has been used as the basis for a variety of projects to determine prioritization in distribution of resources.
+<a href ="https://www.niehs.nih.gov/research/programs/coronavirus/covid19pvi/index.cfm" target="blank">*</a> <br><br>
+		<p><span class="sectionTitle">In New York City</span><br>
+
+			The charts below show where the Index places New York City in terms of vulnerability, and what factors are used to determine that placement.
+			</p>
+	
+			<p><span class="sectionTitle">Overall Vulnerability</span><br>
+		This is where New York City's 2166 census tracts fall in the national percentile ranking</p>
+		</div>
+		
+		<div id="cityChart"></div>
+		<br>
+		<br>
+		<p><span class="sectionTitle">Overall Vulnerability by Borough</span><br>
+	
+		This is where census tracts from each borough fall in the national percentile ranking.</p>
+		<div id="boroughCharts"></div>
+		<div id="boroughChartPopup"></div>
+	
+	</div>
+
+	<div id="composition" class="chapter">
+		<p><span class="sectionTitle">Taking Apart the Vulnerability Composit</span><br>
+
+			<!-- https://pubmed.ncbi.nlm.nih.gov/27029324/-->
+			The index is a composite of the 15 variables collected by the Census. Each part of New York City has a different composition when it comes to the 15 vulnerability metrics. Click any single metric below to see where in the city census tracts are deemed the most and least vulnerable in that metric and how tracts here compare to the rest of the country.<!-- This set of diverse factors allow the index to leverage different types of vulnerability and place vastely different geographies along the same set of axis.  -->
+			</p>
+			<div id="clickableThemes"></div>
+			<div id="themesMapKey"></div>
+			<div id="themesMapHistogram"></div>
+			<div id="clickableThemesMap"></div>
+			<div id="thememapPopup"></div>
+			<p>
+			</p>
+		
+
+	</div>
+
+	<!-- <div id="factors" class="chapter">
+		<p><span class="sectionTitle">What does vulnerability look like?</span><br>
+
+			<p>Here are each of the factors and what they mean in New York City.</p>
+		<div id="themes">
+
+		</div>
+
+			</div>
+	</div> -->
+
+	<div id="explorer" class="chapter">
+		<p><span class="sectionTitle">SVI Remix</span></p>
+	<p>Explore how different combinations of the metrics within SVI effects the social vulnerability index of areas in New York City. Toggling the vulnerability variables on and off below reconfigures the SVI to include/exclude specific variables and changes the vulnerability landscape of the city.</p>
+
+	</div>
+
+	<div id="explorerMap" class="chapter">
+			<div id = "measures">
+			
+			</div>
+
+		<div id="map">
+			<div id="key"></div>
+		
+		</div>
+		<div id="mapPopup"></div>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="centroids.js"></script>
+<script type="text/javascript" src="themes.js"></script>
+<script type="text/javascript" src="svi.js"></script>
+
+
+</body>
+</html>
